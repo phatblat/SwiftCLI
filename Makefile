@@ -2,7 +2,13 @@
 # To get going, start with `make init`
 # https://akrabat.com/cross-platform-makefile-for-swift/
 
-SWIFT_VERSION = DEVELOPMENT-SNAPSHOT-2016-05-03-a
+# trunk
+# SWIFT_VERSION = swift-DEVELOPMENT-SNAPSHOT-2020-04-23-a
+
+# Swift 5.3
+# SWIFT_VERSION = swift-5.3-DEVELOPMENT-SNAPSHOT-2020-04-21-a
+
+SWIFT_VERSION = 5.2.2
 
 # OS specific differences
 UNAME = ${shell uname}
