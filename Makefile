@@ -2,6 +2,8 @@
 # To get going, start with `make init`
 # https://akrabat.com/cross-platform-makefile-for-swift/
 
+SHELL = /bin/sh
+
 # trunk
 # SWIFT_VERSION = swift-DEVELOPMENT-SNAPSHOT-2020-04-23-a
 
