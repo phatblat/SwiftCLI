@@ -32,11 +32,11 @@ test: build
 	swift test
 
 clean:
-	swift build --clean
+	swift package clean
 
 distclean:
 	rm -rf Packages
-	swift build --clean
+	swift package clean
 
 init:
 	- swiftenv install $(SWIFT_VERSION)
