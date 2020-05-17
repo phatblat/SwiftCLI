@@ -4,6 +4,12 @@
 #
 # https://github.com/phatblat/Makefile-swift
 
+################################################################################
+#
+# Variables
+#
+
+CMD_NAME = signpass
 SHELL = /bin/sh
 
 # trunk
@@ -25,7 +31,7 @@ SWIFTC_FLAGS =
 LINKER_FLAGS = -Xlinker -L/usr/local/lib
 PLATFORM = x86_64-apple-macosx
 EXECUTABLE_DIRECTORY = ./.build/${PLATFORM}/debug
-TEST_BUNDLE = CHANGEMEPackageTests.xctest
+TEST_BUNDLE = ${CMD_NAME}PackageTests.xctest
 TEST_RESOURCES_DIRECTORY = ./.build/${PLATFORM}/debug/${TEST_BUNDLE}/Contents/Resources
 endif
 ifeq ($(UNAME), Linux)
@@ -38,6 +44,26 @@ TEST_RESOURCES_DIRECTORY = ${EXECUTABLE_DIRECTORY}
 endif
 
 RUN_RESOURCES_DIRECTORY = ${EXECUTABLE_DIRECTORY}
+
+################################################################################
+#
+# Targets
+#
+
+.PHONY: build copyRunResources copyTestResources dependencies describe distclean
+.PHONY: init list resolve run test update version xcproj
+
+describe:
+	swift package describe
+
+resolve:
+	swift package resolve
+
+dependencies: resolve
+	swift package show-dependencies
+
+update: resolve
+	swift package update
 
 xcproj:
 	swift package generate-xcodeproj
@@ -56,11 +82,13 @@ copyTestResources:
 	mkdir -p ${TEST_RESOURCES_DIRECTORY}
 	cp -r Resources/* ${TEST_RESOURCES_DIRECTORY}
 
+# make run ARGS="asdf"
 run: build
-	${EXECUTABLE_DIRECTORY}/ResourceHandlingSample
+	${EXECUTABLE_DIRECTORY}/${CMD_NAME} $(ARGS)
 
 clean:
 	swift package clean
+	swift package reset
 
 distclean:
 	rm -rf Packages
@@ -79,4 +107,5 @@ ifeq ($(UNAME), Linux)
 	  make && make install
 endif
 
-.PHONY: build test distclean init run copyRunResources copyTestResources xcproj
+version:
+	swift package tools-version
