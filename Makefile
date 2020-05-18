@@ -1,15 +1,14 @@
 #
 # Makefile
-# Makefile-swift
+# SwiftCLI
 #
-# https://github.com/phatblat/Makefile-swift
 
 ################################################################################
 #
 # Variables
 #
 
-CMD_NAME = signpass
+CMD_NAME = swiftcli
 SHELL = /bin/sh
 
 # trunk

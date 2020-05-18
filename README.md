@@ -1,7 +1,15 @@
-# Makefile-swift
+# SwiftCLI
 
-A template `Makefile` for Swift projects using the Swift Package Manager.
-Based on Rob Allen's
+A template for Swift projects using the Swift Package Manager. Includes 3 targets:
+
+- `swiftcli`: an executable
+- `SwiftCLIKit`: a library/framework to hold all logic
+- `SwiftCLIKitTests`: tests for the library
+
+The reason for putting all logic in the library is because an executable target
+is not a bundle and thus Xcode can't run tests against it.
+
+`Makefile` is based on Rob Allen's
 [Cross-platform Makefile for Swift](https://akrabat.com/cross-platform-makefile-for-swift/)
 
 ## 📄 License
