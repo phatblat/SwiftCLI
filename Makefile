@@ -49,50 +49,13 @@ RUN_RESOURCES_DIRECTORY = ${EXECUTABLE_DIRECTORY}
 # Targets
 #
 
-.PHONY: build copyRunResources copyTestResources dependencies describe distclean
-.PHONY: init list resolve run test update version xcproj
+.PHONY: version
+version:
+	xcodebuild -version
+	swift --version
+	swift package tools-version
 
-describe:
-	swift package describe
-
-resolve:
-	swift package resolve
-
-dependencies: resolve
-	swift package show-dependencies
-
-update: resolve
-	swift package update
-
-xcproj:
-	swift package generate-xcodeproj
-
-build: copyRunResources
-	swift build $(SWIFTC_FLAGS) $(LINKER_FLAGS)
-
-test: build copyTestResources
-	swift test --enable-test-discovery
-
-copyRunResources:
-	mkdir -p ${RUN_RESOURCES_DIRECTORY}
-	cp -r Resources/* ${RUN_RESOURCES_DIRECTORY}
-
-copyTestResources:
-	mkdir -p ${TEST_RESOURCES_DIRECTORY}
-	cp -r Resources/* ${TEST_RESOURCES_DIRECTORY}
-
-# make run ARGS="asdf"
-run: build
-	${EXECUTABLE_DIRECTORY}/${CMD_NAME} $(ARGS)
-
-clean:
-	swift package clean
-	swift package reset
-
-distclean:
-	rm -rf Packages
-	swift package clean
-
+.PHONY: init
 init:
 	- swiftenv install $(SWIFT_VERSION)
 	swiftenv local $(SWIFT_VERSION)
@@ -106,5 +69,56 @@ ifeq ($(UNAME), Linux)
 	  make && make install
 endif
 
-version:
-	swift package tools-version
+.PHONY: xcproj
+xcproj:
+	swift package generate-xcodeproj
+
+.PHONY: clean
+clean:
+	xcodebuild clean
+	swift package clean
+	swift package reset
+
+.PHONY: distclean
+distclean:
+	rm -rf Packages
+	swift package clean
+
+.PHONY: describe
+describe:
+	swift package describe
+
+.PHONY: resolve
+resolve:
+	swift package resolve
+
+.PHONY: dependencies
+dependencies: resolve
+	swift package show-dependencies
+
+.PHONY: update
+update: resolve
+	swift package update
+
+.PHONY: build
+build: copyRunResources
+	swift build $(SWIFTC_FLAGS) $(LINKER_FLAGS)
+
+.PHONY: run
+test: build copyTestResources
+	swift test --enable-test-discovery
+
+.PHONY: copyRunResources
+copyRunResources:
+	mkdir -p ${RUN_RESOURCES_DIRECTORY}
+	cp -r Resources/* ${RUN_RESOURCES_DIRECTORY}
+
+.PHONY: copyTestResources
+copyTestResources:
+	mkdir -p ${TEST_RESOURCES_DIRECTORY}
+	cp -r Resources/* ${TEST_RESOURCES_DIRECTORY}
+
+.PHONY: run
+# make run ARGS="asdf"
+run: build
+	${EXECUTABLE_DIRECTORY}/${CMD_NAME} $(ARGS)
