@@ -75,14 +75,10 @@ xcproj:
 
 .PHONY: clean
 clean:
+	rm -rf Packages
 	xcodebuild clean
 	swift package clean
 	swift package reset
-
-.PHONY: distclean
-distclean:
-	rm -rf Packages
-	swift package clean
 
 .PHONY: describe
 describe:
