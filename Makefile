@@ -104,7 +104,7 @@ update: resolve
 build: copyRunResources
 	swift build $(SWIFTC_FLAGS) $(LINKER_FLAGS)
 
-.PHONY: run
+.PHONY: test
 test: build copyTestResources
 	swift test --enable-test-discovery
 
