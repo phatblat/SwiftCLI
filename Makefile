@@ -48,7 +48,7 @@ RUN_RESOURCES_DIRECTORY = ${EXECUTABLE_DIRECTORY}
 .PHONY: help
 help: MAKEFILE_FMT = "  \033[36m%-25s\033[0m%s\n"
 help: ## (default) Displays this message
-	@echo "Ditto main Makefile."
+	@echo "SwiftCLI Makefile"
 	@echo ""
 	@echo "Targets:"
 	@grep -E '^[a-zA-Z0-9_-]*:.*?##' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?##"}; {printf $(MAKEFILE_FMT), $$1, $$2}'
@@ -63,7 +63,7 @@ help: ## (default) Displays this message
 #
 
 .PHONY: version
-version:
+version: ## Shows versions of tools
 	xcodebuild -version
 	swift --version
 	swift package tools-version
