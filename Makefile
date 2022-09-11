@@ -69,7 +69,7 @@ version:
 	swift package tools-version
 
 .PHONY: init
-init:
+init: ## Installs required tools
 	- swiftenv install $(SWIFT_VERSION)
 	swiftenv local $(SWIFT_VERSION)
 ifeq ($(UNAME), Linux)
@@ -83,46 +83,45 @@ ifeq ($(UNAME), Linux)
 endif
 
 .PHONY: clean
-clean:
-	rm -rf Packages
+clean: ## Cleans build folders
 	swift package clean
 	swift package reset
 
 .PHONY: describe
-describe:
+describe: ## Shows the package description
 	swift package describe
 
 .PHONY: resolve
-resolve:
+resolve: ## Installs package dependencies
 	swift package resolve
 
 .PHONY: dependencies
-dependencies: resolve
+dependencies: resolve ##  Show package depencencies
 	swift package show-dependencies
 
 .PHONY: update
-update: resolve
+update: resolve ## Updates dependencies
 	swift package update
 
 .PHONY: build
-build: copyRunResources
+build: copyRunResources ## Builds the package
 	swift build $(SWIFTC_FLAGS) $(LINKER_FLAGS)
 
 .PHONY: test
-test: build copyTestResources
+test: build copyTestResources ## Tests the package
 	swift test --enable-test-discovery
 
 .PHONY: copyRunResources
-copyRunResources:
+copyRunResources: ## Copies runtime resources
 	mkdir -p ${RUN_RESOURCES_DIRECTORY}
 	cp -r Resources/* ${RUN_RESOURCES_DIRECTORY}
 
 .PHONY: copyTestResources
-copyTestResources:
+copyTestResources:## Copies test resources
 	mkdir -p ${TEST_RESOURCES_DIRECTORY}
 	cp -r Resources/* ${TEST_RESOURCES_DIRECTORY}
 
 .PHONY: run
 # make run ARGS="asdf"
-run: build
+run: build ## Runs the project executible
 	${EXECUTABLE_DIRECTORY}/${CMD_NAME} $(ARGS)
