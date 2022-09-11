@@ -80,22 +80,17 @@ init:
 	swiftenv local $(SWIFT_VERSION)
 ifeq ($(UNAME), Linux)
 	cd /vagrant && \
-	  git clone --recursive -b experimental/foundation https://github.com/apple/swift-corelibs-libdispatch.git && \
-	  cd swift-corelibs-libdispatch && \
-	  sh ./autogen.sh && \
-	  ./configure --with-swift-toolchain=/home/vagrant/swiftenv/versions/$(SWIFT_VERSION)/usr \
-	    --prefix=/home/vagrant/swiftenv/versions/$(SWIFT_VERSION)/usr && \
-	  make && make install
+	git clone --recursive -b experimental/foundation https://github.com/apple/swift-corelibs-libdispatch.git && \
+	cd swift-corelibs-libdispatch && \
+	sh ./autogen.sh && \
+	./configure --with-swift-toolchain=/home/vagrant/swiftenv/versions/$(SWIFT_VERSION)/usr \
+		--prefix=/home/vagrant/swiftenv/versions/$(SWIFT_VERSION)/usr && \
+	make && make install
 endif
-
-.PHONY: xcproj
-xcproj:
-	swift package generate-xcodeproj
 
 .PHONY: clean
 clean:
 	rm -rf Packages
-	xcodebuild clean
 	swift package clean
 	swift package reset
 
