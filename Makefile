@@ -26,23 +26,42 @@ SWIFT_VERSION = 5.3
 UNAME = ${shell uname}
 
 ifeq ($(UNAME), Darwin)
-SWIFTC_FLAGS =
-LINKER_FLAGS = -Xlinker -L/usr/local/lib
-PLATFORM = x86_64-apple-macosx
-EXECUTABLE_DIRECTORY = ./.build/${PLATFORM}/debug
-TEST_BUNDLE = ${CMD_NAME}PackageTests.xctest
-TEST_RESOURCES_DIRECTORY = ./.build/${PLATFORM}/debug/${TEST_BUNDLE}/Contents/Resources
+	SWIFTC_FLAGS =
+	LINKER_FLAGS = -Xlinker -L/usr/local/lib
+	PLATFORM = x86_64-apple-macosx
+	EXECUTABLE_DIRECTORY = ./.build/${PLATFORM}/debug
+	TEST_BUNDLE = ${CMD_NAME}PackageTests.xctest
+	TEST_RESOURCES_DIRECTORY = ./.build/${PLATFORM}/debug/${TEST_BUNDLE}/Contents/Resources
 endif
 ifeq ($(UNAME), Linux)
-SWIFTC_FLAGS = -Xcc -fblocks
-LINKER_FLAGS = -Xlinker -rpath -Xlinker .build/debug
-PATH_TO_SWIFT = /home/vagrant/swiftenv/versions/$(SWIFT_VERSION)
-PLATFORM = x86_64-unknown-linux
-EXECUTABLE_DIRECTORY = ./.build/${PLATFORM}/debug
-TEST_RESOURCES_DIRECTORY = ${EXECUTABLE_DIRECTORY}
+	SWIFTC_FLAGS = -Xcc -fblocks
+	LINKER_FLAGS = -Xlinker -rpath -Xlinker .build/debug
+	PATH_TO_SWIFT = /home/vagrant/swiftenv/versions/$(SWIFT_VERSION)
+	PLATFORM = x86_64-unknown-linux
+	EXECUTABLE_DIRECTORY = ./.build/${PLATFORM}/debug
+	TEST_RESOURCES_DIRECTORY = ${EXECUTABLE_DIRECTORY}
 endif
 
 RUN_RESOURCES_DIRECTORY = ${EXECUTABLE_DIRECTORY}
+
+################################################################################
+#
+# Help
+#
+
+.DEFAULT_GOAL := help
+
+.PHONY: help
+help: MAKEFILE_FMT = "  \033[36m%-25s\033[0m%s\n"
+help: ## (default) Displays this message
+	@echo "Ditto main Makefile."
+	@echo ""
+	@echo "Targets:"
+	@grep -E '^[a-zA-Z0-9_-]*:.*?##' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?##"}; {printf $(MAKEFILE_FMT), $$1, $$2}'
+	@echo ""
+	@echo "Parameters:"
+	@grep -E '^[A-Z0-9_-]* ?\?=.*?##' $(MAKEFILE_LIST) | awk 'BEGIN {FS = " ?\\?=.*?##"}; {printf $(MAKEFILE_FMT), $$1, $$2}'
+: # Hacky way to display a newline ##
 
 ################################################################################
 #
